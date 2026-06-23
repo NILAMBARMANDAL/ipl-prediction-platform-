@@ -1,6 +1,5 @@
 name: CI
 
-
 on:
   push:
     branches: [main]
@@ -30,7 +29,8 @@ jobs:
         run: python tests/check_parity.py
 
       - name: Import-check the FastAPI app
-        run: python -c "import main; print('FastAPI app imports OK; model_loaded =', main.model is not 
+        run: python -c "import main; assert main.app is not None; print('FastAPI app imports OK')"
+
   node-backend:
     name: Node backend (install + syntax check)
     runs-on: ubuntu-latest
@@ -50,7 +50,6 @@ jobs:
 
       - name: Syntax-check source files
         run: node --check src/index.js && node --check src/app.js
-
 
   frontend:
     name: Frontend (install + build)
