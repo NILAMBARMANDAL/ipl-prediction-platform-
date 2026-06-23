@@ -134,6 +134,32 @@ Training is organized as a clean, staged pipeline — `ingest → clean → feat
 
 ## System Architecture
 
+```mermaid
+flowchart TD
+    FE["React Frontend<br/><small>dashboard · predictor · auth</small>"]
+    GW["Node / Express Gateway<br/><small>auth · analytics · validation · history</small>"]
+    ML["FastAPI ML Service<br/><small>shared features + pipe.pkl · model.predict_proba</small>"]
+    DB[("MongoDB Atlas<br/><small>matches · deliveries<br/>users · predictions</small>")]
+
+    FE -->|"Axios + JWT cookie"| GW
+    GW -->|"Mongoose"| DB
+    GW -->|"HTTP — raw match state"| ML
+    ML -->|"win %"| GW
+    GW -->|"response"| FE
+
+    classDef frontend fill:#E6F1FB,stroke:#185FA5,color:#042C53;
+    classDef gateway fill:#E1F5EE,stroke:#0F6E56,color:#04342C;
+    classDef ml fill:#FAECE7,stroke:#993C1D,color:#4A1B0C;
+    classDef db fill:#F1EFE8,stroke:#5F5E5A,color:#2C2C2A;
+
+    class FE frontend;
+    class GW gateway;
+    class ML ml;
+    class DB db;
+```
+
+A prediction flows **Frontend → Node → FastAPI → back**. Node validates the request and forwards the raw match state; FastAPI computes the model features (with the same code the model was trained on) and predicts. Node stays a clean gateway: auth, analytics, the data layer, and proxying this one ML call.
+
 ```txt
                         match state
    +-------------------------------------------+
