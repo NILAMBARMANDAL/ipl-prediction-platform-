@@ -1,0 +1,23 @@
+# config.yaml — training pipeline configuration.
+#
+# Everything tunable lives here so retraining never requires touching code:
+# point at different data, change the split, or swap model hyperparameters, then
+# just re-run `python pipeline.py`.
+
+data:
+  matches_csv: "../../backend-node/data/matches.csv"
+  deliveries_csv: "../../backend-node/data/deliveries.csv"
+
+split:
+  test_size: 0.2
+  random_state: 1
+
+model:
+  # Logistic regression hyperparameters.
+  solver: "liblinear"
+  C: 1.0
+  max_iter: 100
+
+output:
+  model_path: "../pipe.pkl"          # written to backend-ml/ so FastAPI can load it
+  metrics_path: "metrics.json"        # written to backend-ml/training/metrics.json

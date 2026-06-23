@@ -1,0 +1,10 @@
+# Minimum-version pins (not exact) so pip can grab prebuilt wheels for newer
+# Python versions like 3.13/3.14. The upper bounds (<3, <2) keep us within the
+# major versions this project was built and tested against, avoiding surprise
+# breaking changes from a new major release.
+fastapi>=0.115
+uvicorn[standard]>=0.31
+scikit-learn>=1.5,<2
+pandas>=2.2,<3
+pydantic>=2.9
+pyyaml>=6.0

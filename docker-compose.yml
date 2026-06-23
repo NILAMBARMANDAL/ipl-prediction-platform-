@@ -1,0 +1,52 @@
+# docker-compose.yml — runs all three services together.
+#
+# Usage:
+#   1. Copy backend-node/.env.example -> backend-node/.env and fill in your
+#      MongoDB Atlas URI + JWT secrets.
+#   2. docker compose up --build
+#
+# Services:
+#   ml       FastAPI model server      (port 8002)
+#   backend  Node/Express API gateway  (port 8001)
+#   frontend React app via nginx       (port 5173 -> container 80)
+#
+# Note: this compose uses MongoDB Atlas (cloud) rather than a local Mongo
+# container, matching the project's setup. The Node service reads MONGODB_URI
+# from backend-node/.env.
+
+services:
+  ml:
+    build: ./backend-ml
+    ports:
+      - "8002:8002"
+    environment:
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:8001
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8002/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  backend:
+    build: ./backend-node
+    ports:
+      - "8001:8001"
+    env_file:
+      - ./backend-node/.env
+    environment:
+      # Inside the compose network, the ML service is reachable by its service name.
+      - ML_SERVICE_URL=http://ml:8002
+      - CORS_ORIGIN=http://localhost:5173
+    depends_on:
+      - ml
+
+  frontend:
+    build:
+      context: ./frontend-react
+      args:
+        # The browser talks to the Node backend on the host's published port.
+        - VITE_API_URL=http://localhost:8001/api/v1
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

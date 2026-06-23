@@ -1,0 +1,33 @@
+# ===== SECRETS — never commit these =====
+.env
+**/.env
+*.env
+!.env.example
+!**/.env.example
+
+# ===== Node =====
+node_modules/
+**/node_modules/
+npm-debug.log*
+*.log
+
+# ===== Python =====
+__pycache__/
+**/__pycache__/
+*.pyc
+.venv/
+**/.venv/
+venv/
+
+# ===== Build output =====
+dist/
+**/dist/
+build/
+
+# ===== Data (large CSVs) — see backend-node/data/README.md to obtain =====
+backend-node/data/*.csv
+
+# ===== OS / editor =====
+.DS_Store
+.vscode/
+.idea/

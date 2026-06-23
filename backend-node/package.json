@@ -1,0 +1,34 @@
+{
+  "name": "ipl-backend-node",
+  "version": "1.0.0",
+  "description": "Node/Express API gateway for the IPL Analytics & Win-Predictor engine",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "seed": "node scripts/seedIplData.js"
+  },
+  "keywords": [
+    "ipl",
+    "express",
+    "mongodb",
+    "analytics"
+  ],
+  "author": "Nilambar Mandal",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^5.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
