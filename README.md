@@ -160,29 +160,6 @@ flowchart TD
 
 A prediction flows **Frontend → Node → FastAPI → back**. Node validates the request and forwards the raw match state; FastAPI computes the model features (with the same code the model was trained on) and predicts. Node stays a clean gateway: auth, analytics, the data layer, and proxying this one ML call.
 
-```txt
-                        match state
-   +-------------------------------------------+
-   |              React Frontend               |
-   |        (dashboard + predictor + auth)     |
-   +---------------+---------------------------+
-                   |  Axios + JWT cookie
-                   v
-   +-------------------------------------------+        +------------------+
-   |           Node / Express Gateway          |        |   MongoDB Atlas  |
-   |  auth - analytics aggregation - validation|------->|  matches         |
-   |            - prediction history           |Mongoose|  deliveries      |
-   +---------------+---------------------------+        |  users           |
-                   |  HTTP (raw match state)            |  predictions     |
-                   v                                    +------------------+
-   +-------------------------------------------+
-   |            FastAPI ML Service             |
-   |   shared feature engineering + pipe.pkl   |
-   |            model.predict_proba            |
-   +-------------------------------------------+
-```
-
-A prediction flows **Frontend -> Node -> FastAPI -> back**. Node validates the request and forwards the raw match state; FastAPI computes the model features (with the same code the model was trained on) and predicts. Node stays a clean gateway: auth, analytics, the data layer, and proxying this one ML call.
 
 ---
 
