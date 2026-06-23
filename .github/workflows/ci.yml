@@ -1,0 +1,73 @@
+name: CI
+
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+
+  ml-service:
+    name: ML service (parity test + import check)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend-ml
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run train/serve parity test
+        run: python tests/check_parity.py
+
+      - name: Import-check the FastAPI app
+        run: python -c "import main; print('FastAPI app imports OK; model_loaded =', main.model is not 
+  node-backend:
+    name: Node backend (install + syntax check)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend-node
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Syntax-check source files
+        run: node --check src/index.js && node --check src/app.js
+
+
+  frontend:
+    name: Frontend (install + build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend-react
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
