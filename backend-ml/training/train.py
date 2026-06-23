@@ -1,14 +1,3 @@
-"""
-train.py — regenerate pipe.pkl from the raw CSVs.
-
-This is a clean, scripted version of the exploratory notebook (Notebook.ipynb in
-this folder). Run it to reproduce the model from scratch:
-
-    python train.py --matches data/matches.csv --deliveries data/deliveries.csv
-
-It mirrors the notebook's feature engineering exactly so the saved pipeline
-matches the 9-feature contract the FastAPI service expects.
-"""
 
 import argparse
 import pickle

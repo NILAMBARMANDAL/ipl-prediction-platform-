@@ -1,21 +1,4 @@
-"""
-pipeline.py — orchestrates the IPL win-predictor training pipeline.
 
-Runs five stages in order:  ingest -> clean -> features -> train -> evaluate
-
-This is intentionally a PLAIN-PYTHON pipeline, not ZenML. The companion
-Predictive-Maintenance project uses ZenML + MLflow because there the ML lifecycle
-IS the project. Here the focus is the product (the web app), so the training is
-kept lightweight: a clear staged flow, driven by config.yaml, with no heavyweight
-orchestration. Using the right weight of tooling for the job is the point.
-
-Run from the backend-ml/ directory so the shared `features.py` is importable:
-
-    cd backend-ml
-    python training/pipeline.py
-    # or with a custom config:
-    python training/pipeline.py --config training/config.yaml
-"""
 import argparse
 import os
 import pickle
@@ -45,8 +28,7 @@ def load_config(path):
 def run(config_path):
     cfg = load_config(config_path)
 
-    # Resolve paths relative to the config file's directory so the pipeline works
-    # no matter the current working directory.
+
     cfg_dir = os.path.dirname(os.path.abspath(config_path))
 
     def rel(p):

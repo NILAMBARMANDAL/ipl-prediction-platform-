@@ -1,8 +1,4 @@
-# config.yaml — training pipeline configuration.
-#
-# Everything tunable lives here so retraining never requires touching code:
-# point at different data, change the split, or swap model hyperparameters, then
-# just re-run `python pipeline.py`.
+
 
 data:
   matches_csv: "../../backend-node/data/matches.csv"
@@ -19,5 +15,5 @@ model:
   max_iter: 100
 
 output:
-  model_path: "../pipe.pkl"          # written to backend-ml/ so FastAPI can load it
-  metrics_path: "metrics.json"        # written to backend-ml/training/metrics.json
+  model_path: "../pipe.pkl"          
+  metrics_path: "metrics.json"      
