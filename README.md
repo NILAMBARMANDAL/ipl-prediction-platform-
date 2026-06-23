@@ -438,6 +438,15 @@ For React Router refresh support on Vercel, a `vercel.json` with a catch-all rew
 
 Because auth uses an httpOnly cookie and the frontend (Vercel) and backend (Render) are on different domains, the cookie is sent cross-site. The code handles this: in production it sets `secure: true` and `sameSite: "none"`, both of which require HTTPS — which Vercel and Render provide automatically. If login doesn't persist, confirm `NODE_ENV=production` is set and `CORS_ORIGIN` exactly matches the Vercel URL (no trailing slash).
 
+### A note on free-tier cold starts
+
+Both backends run on Render's free tier, which spins services down after
+15 minutes of inactivity — the first request after idle takes ~30-50s to
+wake. To keep the live demo responsive, an external uptime monitor
+(UptimeRobot) pings both `/health` endpoints every 5 minutes so the
+services stay warm. The health endpoints accept both `GET` and `HEAD`
+requests for this reason. For a production app I'd move to an always-on
+tier; for a portfolio demo the keep-warm ping is a pragmatic free solution.
 ---
 
 ## Project Structure
