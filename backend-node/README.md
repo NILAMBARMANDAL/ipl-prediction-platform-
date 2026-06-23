@@ -12,19 +12,19 @@ The primary API for IPLLab: serves historical analytics aggregated from MongoDB,
 
 ## Architecture
 
-```
+\`\`\`
 src/
 ├── controllers/    # business logic (analytics, predict, user)
-├── models/         # Mongoose schemas (match, delivery, user)
+├── models/         # Mongoose schemas (match, delivery, user, prediction)
 ├── routes/         # URL → controller mapping, mounted under /api/v1
-├── middlewares/    # JWT auth guard
+├── middlewares/    # JWT auth guard (required + optional)
 ├── utils/          # asyncHandler, ApiError, ApiResponse
 ├── db/             # MongoDB connection
 ├── app.js          # Express config + central error handler
 └── index.js        # bootstrap: connect DB, then listen
 scripts/
 └── seedIplData.js  # streams matches.csv + deliveries.csv into MongoDB
-```
+\`\`\`
 
 The same structural conventions as a production Express service: an `asyncHandler` wrapper so controllers need no try/catch, a custom `ApiError` carrying HTTP status codes, and a uniform `ApiResponse` envelope `{ statusCode, data, message, success }`. One central error-handling middleware translates every thrown error into the right response.
 
@@ -43,12 +43,13 @@ Base URL: `/api/v1`
 | `GET /analytics/venue-stats?limit=` | per-venue avg 1st-innings score |
 | `GET /analytics/season-trend` | matches per season |
 
-### Prediction (public)
+### Prediction
 | Route | Body | Returns |
 | --- | --- | --- |
 | `POST /predict` | `{ battingTeam, bowlingTeam, city, target, currentScore, overs, wickets }` | win/loss probability + engineered features |
+| `GET /predict/history` | — | (protected) the logged-in user's saved predictions |
 
-`overs` is decimal cricket notation (e.g. `10.3` = 10 overs, 3 balls). Node acts as a **gateway**: it validates the request and forwards the raw match state to the FastAPI service at `ML_SERVICE_URL`, which computes the model features (with the same code the model was trained on) and predicts. Node maps the response to camelCase for the frontend.
+`overs` is decimal cricket notation (e.g. `10.3` = 10 overs, 3 balls). Node acts as a **gateway**: it validates the request and forwards the raw match state to the FastAPI service at `ML_SERVICE_URL`, which computes the model features (with the same code the model was trained on) and predicts. Node maps the response to camelCase for the frontend. The predictor is open to everyone; if the caller is logged in, the prediction is saved to their history.
 
 ### Auth
 | Route | Notes |
@@ -61,7 +62,7 @@ Base URL: `/api/v1`
 
 ## Running
 
-```bash
+\`\`\`bash
 cp .env.example .env     # fill in MONGODB_URI + JWT secrets
 npm install
 
@@ -69,9 +70,13 @@ npm install
 npm run seed
 
 npm run dev              # http://localhost:8001
-```
+\`\`\`
 
-See the root [SETUP.md](../SETUP.md) for environment variables and deployment.
+See the [root README](../README.md) for full environment variables and deployment instructions.
+
+## CI/CD
+
+This service is covered by the project's CI pipeline (GitHub Actions). On every push to `main`, CI installs dependencies and syntax-checks the source files; the build must pass before changes are merged. Deployment is continuous — Render is connected to the repository and automatically redeploys this service on every push to `main`.
 
 ## Notes
 

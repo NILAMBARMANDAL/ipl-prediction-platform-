@@ -1,5 +1,7 @@
 # IPL Prediction Platform
-[![CI](https://github.com/NILAMBARMANDAL/ipl-prediction-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/NILAMBARMANDAL/ipl-prediction-platform/actions/workflows/ci.yml)
+
+[![CI](https://github.com/NILAMBARMANDAL/ipl-prediction-platform-/actions/workflows/ci.yml/badge.svg)](https://github.com/NILAMBARMANDAL/ipl-prediction-platform-/actions/workflows/ci.yml)
+
 A full-stack analytics and machine-learning platform built on 17 seasons of Indian Premier League data. It serves live win-probability predictions for a run chase, surfaces deep historical analytics computed from ball-by-ball data, and gives signed-in users a saved history of their predictions.
 
 The project is built as **three independent services** — a React frontend, a Node/Express API gateway, and an isolated Python ML service — each doing the job it is best suited to. The architecture is the point: it demonstrates connecting a machine-learning model to a real product through a clean service boundary, rather than bolting a model onto a single app.
