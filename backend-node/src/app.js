@@ -60,10 +60,9 @@ app.use("/api/v1/predict", predictRouter);
 app.use("/api/v1/users", userRouter);
 
 // Simple health check — handy for Docker/monitoring to confirm the app is up.
-app.get("/api/v1/health", (req, res) => {
+app.all("/api/v1/health", (req, res) => {
   res.status(200).json({ status: "ok", service: "ipl-node-backend" });
 });
-
 // --- Central error handler ---
 // Express identifies error middleware by its FOUR arguments. Every error thrown
 // in any asyncHandler-wrapped controller lands here. We translate ApiError into

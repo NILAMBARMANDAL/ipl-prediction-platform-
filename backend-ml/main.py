@@ -66,12 +66,9 @@ class PredictionOutput(BaseModel):
 def root():
     return {"service": "ipl-ml", "status": "ok", "model_loaded": model is not None}
 
-
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health():
     return {"status": "ok", "model_loaded": model is not None}
-
-
 @app.post("/predict", response_model=PredictionOutput)
 def predict(state: MatchState):
     if model is None:
