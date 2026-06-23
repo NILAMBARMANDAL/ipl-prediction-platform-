@@ -434,6 +434,23 @@ NODE_ENV=production
 
 For React Router refresh support on Vercel, a `vercel.json` with a catch-all rewrite to `index.html` is included in the frontend folder.
 
+### Continuous Integration & Deployment (CI/CD)
+
+This project runs a full CI/CD pipeline:
+
+- **CI — GitHub Actions.** On every push and pull request to `main`, a workflow
+  (`.github/workflows/ci.yml`) runs three jobs in parallel: the ML service installs
+  its dependencies and runs the train/serve **parity test** (the train/serve skew
+  guard), the Node backend installs and syntax-checks its source, and the frontend
+  runs a full production build. A red build surfaces a problem before it ever
+  reaches production.
+- **CD — Render & Vercel.** Both backends (Render) and the frontend (Vercel) are
+  connected to the repository and **auto-deploy on every push to `main`**. A merged
+  change goes: push → tested by GitHub Actions → deployed automatically.
+
+The status badge at the top of this README reflects the latest CI run.
+
+
 ### A note on cross-site cookies
 
 Because auth uses an httpOnly cookie and the frontend (Vercel) and backend (Render) are on different domains, the cookie is sent cross-site. The code handles this: in production it sets `secure: true` and `sameSite: "none"`, both of which require HTTPS — which Vercel and Render provide automatically. If login doesn't persist, confirm `NODE_ENV=production` is set and `CORS_ORIGIN` exactly matches the Vercel URL (no trailing slash).
@@ -447,6 +464,8 @@ wake. To keep the live demo responsive, an external uptime monitor
 services stay warm. The health endpoints accept both `GET` and `HEAD`
 requests for this reason. For a production app I'd move to an always-on
 tier; for a portfolio demo the keep-warm ping is a pragmatic free solution.
+
+
 ---
 
 ## Project Structure
