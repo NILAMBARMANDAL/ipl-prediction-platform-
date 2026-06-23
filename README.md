@@ -8,11 +8,11 @@ The project is built as **three independent services** — a React frontend, a N
 
 ## Deployed Links
 
-- **Frontend:** https://your-frontend.vercel.app
-- **Node API:** https://your-backend.onrender.com
-- **ML Service:** https://your-ml.onrender.com
+- **Frontend:** https://ipl-prediction-platform.vercel.app
+- **Node API:** https://ipl-backend-tdlz.onrender.com
+- **ML Service:**  https://ipl-ml-ulbr.onrender.com
 
-*(Replace these with your live URLs after deploying.)*
+
 
 ---
 

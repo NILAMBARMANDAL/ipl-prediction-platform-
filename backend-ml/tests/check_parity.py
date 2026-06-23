@@ -9,8 +9,6 @@ from features import compute_match_state_features, overs_to_balls
 
 
 def vectorized_reference(target, current_score, balls_bowled, wickets_fallen):
-    """A standalone re-implementation matching steps/features.py's row math,
-    used purely to cross-check the shared serving function."""
     runs_left = target - current_score
     balls_left = 120 - balls_bowled
     wickets_left = 10 - wickets_fallen
